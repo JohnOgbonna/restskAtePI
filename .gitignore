@@ -1,0 +1,6 @@
+.env 
+/node-modules
+/src/data
+/src/connectToDb.ts
+/src/addToDB.ts
+/dist

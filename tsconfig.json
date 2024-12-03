@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "ES6", // Set target JavaScript version
+    "module": "CommonJS", // Use CommonJS module system for Node.js
+    "strict": true, // Enable strict type checking
+    "esModuleInterop": true, // Allow ES module imports
+    "resolveJsonModule": true, // Enable importing JSON files
+    "outDir": "./dist", // Output directory for compiled files
+    "rootDir": "./src", // Source files location
+    "skipLibCheck": true // Skip type checking of declaration files
+  },
+  "include": [
+    "src"
+, "server.ts"  ], // Include the source folder
+  "exclude": [
+    "node_modules"
+  ] // Exclude unnecessary folders
+}
