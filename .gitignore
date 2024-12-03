@@ -1,5 +1,5 @@
 .env 
-/node-modules
+/node_modules
 /src/data
 /src/connectToDb.ts
 /src/addToDB.ts
