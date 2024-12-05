@@ -115,7 +115,7 @@ export const getTrickofTheDay = async () => {
     }
 }
 
-export const filterTricks = async (boardRotationDirection?: string, boardRotationDegrees?: number, bodyRotationDirection?: string, bodyRotationDegrees?: number, flipDirection?: string, difficulty?: string) => {
+export const filterTricks = async (difficulty?: string, boardRotationDirection?: string, boardRotationDegrees?: number, bodyRotationDirection?: string, bodyRotationDegrees?: number, flipDirection?: string) => {
     try {
         await mongoose.connect(dbURI)
         type Filters = {
@@ -128,16 +128,18 @@ export const filterTricks = async (boardRotationDirection?: string, boardRotatio
         }
 
         const filters: Filters = {
+            difficulty: { $exists: true },
             degreeOfBoardRotation: { $gte: 0 },
             boardRotationDirection: { $exists: true },
             degreeOfBodyRotation: { $gte: 0 },
             bodyRotationDirection: { $exists: true },
             flipDirection: { $exists: true },
-            difficulty: { $exists: true }
-
         }
 
         let boardRotationTricks: StandardTrick[] = []
+        if (difficulty) {
+            filters.difficulty = toTitleCase(difficulty)
+        }
         if (boardRotationDegrees && boardRotationDegrees >= 0) {
             filters.degreeOfBoardRotation = boardRotationDegrees
         }
@@ -153,11 +155,9 @@ export const filterTricks = async (boardRotationDirection?: string, boardRotatio
         if (flipDirection) {
             filters.flipDirection = toTitleCase(flipDirection)
         }
-        if (difficulty) {
-            filters.difficulty = toTitleCase(difficulty)
-        }
-
+       
         boardRotationTricks = await standardTrick.find(filters)
+        if (boardRotationTricks.length < 1) return { message: "No tricks found for the given filters" }
         return boardRotationTricks
     }
     catch (err) {
