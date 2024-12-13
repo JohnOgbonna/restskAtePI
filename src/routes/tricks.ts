@@ -84,6 +84,10 @@ router.get('/trick-of-the-day', async (_req: Request, res: Response, next) => {
 
 router.get('/filter', async (req: Request, res: Response, next) => {
     const {  difficulty, boardRotationDirection, boardRotationDegrees, bodyRotationDirection, bodyRotationDegrees, flipDirection } = req.query
+    if (difficulty && !["beginner", "intermediate", "advanced"].includes((difficulty as string).toLowerCase())) {
+        res.status(400).json({ error: "Invalid difficulty. Must be in the form 'beginner', 'intermediate' or 'advanced'" });
+        return
+    }
     if (boardRotationDirection && !["frontside", "backside", "varied", "forward"].includes((boardRotationDirection as string).toLowerCase())) {
         res.status(400).json({ error: "Invalid board rotation direction. Must be in the form 'frontside', 'backside', 'varied' or 'forward'" });
         return

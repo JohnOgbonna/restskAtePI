@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv"
 import { standardTrick, trickOfTheDay } from "./schemas";
-import { StandardTrick, TrickOfTheDay } from "./typesAndInterfaces";
+import { StandardTrick, trickFilters, TrickOfTheDay } from "./typesAndInterfaces";
 import { toTitleCase } from "./caseFormatters";
 dotenv.config()
 const dbURI = process.env.DB_CONNECTION_STRING as string
@@ -118,16 +118,7 @@ export const getTrickofTheDay = async () => {
 export const filterTricks = async (difficulty?: string, boardRotationDirection?: string, boardRotationDegrees?: number, bodyRotationDirection?: string, bodyRotationDegrees?: number, flipDirection?: string) => {
     try {
         await mongoose.connect(dbURI)
-        type Filters = {
-            degreeOfBoardRotation: number | { $gte: 0 },
-            boardRotationDirection: { $exists: true } | string,
-            degreeOfBodyRotation: number | { $gte: 0 },
-            bodyRotationDirection: { $exists: true } | string,
-            flipDirection?: { $exists: true } | string,
-            difficulty?: { $exists: true } | string
-        }
-
-        const filters: Filters = {
+        const filters: trickFilters = {
             difficulty: { $exists: true },
             degreeOfBoardRotation: { $gte: 0 },
             boardRotationDirection: { $exists: true },

@@ -5,7 +5,7 @@ export const standardTrickSchema = new mongoose.Schema({
     path: { type: String, required: true },
     difficulty: { 
       type: String, 
-      enum: ["beginner", "Intermediate", "Advanced"], 
+      enum: ["Beginner", "Intermediate", "Advanced"], 
       required: true 
     },
     flipTrick: { type: Boolean, required: true },
@@ -18,7 +18,7 @@ export const standardTrickSchema = new mongoose.Schema({
     boardRotationDirection: { type: String, required: false },
     bodyRotationDirection: { 
       type: String, 
-      enum: ["Frontside", "Backside", "Frontside or Backside", null], 
+      enum: ["Frontside", "Backside", "Frontside Or Backside", null], 
       default: null 
     },
     degreeOfBoardRotation: { type: Number, required: false },

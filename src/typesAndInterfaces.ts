@@ -19,3 +19,12 @@ export interface TrickOfTheDay {
   date: Date,
   trick: StandardTrick
 }
+
+export interface trickFilters {
+  degreeOfBoardRotation: number | { $gte: 0 },
+  boardRotationDirection: { $exists: true } | string,
+  degreeOfBodyRotation: number | { $gte: 0 },
+  bodyRotationDirection: { $exists: true } | string,
+  flipDirection?: { $exists: true } | string,
+  difficulty?: { $exists: true } | string
+}
