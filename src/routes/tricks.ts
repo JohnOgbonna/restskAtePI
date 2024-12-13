@@ -7,7 +7,8 @@ const router = express.Router();
 router.get('/', async (_req: Request, res: Response, next) => {
     try {
         const result = await getAllTricks();
-        res.status(200).json(result); // Use .json() to send the result as JSON
+        res.status(200).json(result);
+        return
     } catch (err) {
         console.error('Error fetching tricks:', err); // Log the error for debugging
         res.status(500).json({ error: 'An unexpected error occurred' }); // Send a generic error message
@@ -53,6 +54,11 @@ router.get('/name/:name', async (req: Request, res: Response, next) => {
     }
 })
 
+router.get('/name', async (req: Request, res: Response, next) => {
+    res.status(400).json({ error: "Please provide a name parameter in the URL in the form '/name/trick-name'. Multiword trick names must be in 'snake_case' or dash-case format" });
+    return
+})
+
 router.get('/random', async (_req: Request, res: Response, next) => {
     try {
         const result = await getRandomTrick()
@@ -77,7 +83,7 @@ router.get('/trick-of-the-day', async (_req: Request, res: Response, next) => {
 })
 
 router.get('/filter', async (req: Request, res: Response, next) => {
-    const { boardRotationDirection, boardRotationDegrees, bodyRotationDirection, bodyRotationDegrees, flipDirection } = req.query
+    const {  difficulty, boardRotationDirection, boardRotationDegrees, bodyRotationDirection, bodyRotationDegrees, flipDirection } = req.query
     if (boardRotationDirection && !["frontside", "backside", "varied", "forward"].includes((boardRotationDirection as string).toLowerCase())) {
         res.status(400).json({ error: "Invalid board rotation direction. Must be in the form 'frontside', 'backside', 'varied' or 'forward'" });
         return
@@ -100,6 +106,7 @@ router.get('/filter', async (req: Request, res: Response, next) => {
     }
     try {
         const result = await filterTricks(
+            difficulty ? (difficulty as string) : undefined,
             boardRotationDirection ? (boardRotationDirection as string) : undefined,
             boardRotationDegrees ? +boardRotationDegrees : undefined,
             bodyRotationDirection ? (bodyRotationDirection as string) : undefined,
@@ -114,6 +121,5 @@ router.get('/filter', async (req: Request, res: Response, next) => {
         next(err)
     }
 })
-
 
 export default router;
